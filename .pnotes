@@ -1,0 +1,12 @@
+{
+    "commands": [
+        {
+            "name": "test",
+            "base": "echo 'test'"
+        },
+        {
+            "name": "test-get",
+            "base": "echo 'test-get'"
+        }
+    ]
+}
