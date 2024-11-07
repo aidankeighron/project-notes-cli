@@ -13,23 +13,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-type JsonData struct {
-	Commands	[]Command `json:"commands"`
-}
-
-type Command struct {
-	Name	string `json:"name"`
-	Base	string `json:"base"`
-	// flags	string `json:"flags"`
-
-}
-
-func check(e error) {
-    if e != nil {
-        panic(e)
-    }
-}
-
 // getCmd represents the get command
 var getCmd = &cobra.Command{
 	Use:   "get",
@@ -41,33 +24,38 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var commandName = "go run main.go get test-get"
-        if len(args) >= 1 && args[0] != "" {
+        var commandName string
+		if len(args) == 1 && args[0] != "" {
             commandName = args[0]
-        }
+        } else {
+			fmt.Println("get [name]")
+			return;
+		}
 
-		file, err := os.OpenFile(".pnotes", os.O_CREATE, 0664) // TODO better permissions and flags
-		check(err)
+		// TODO
+		file, err := os.OpenFile(FILE_NAME, os.O_CREATE, 0664)
+		check(err, "Error when opening/creating file")
 		defer file.Close()
 		
 		byteValue, _ := io.ReadAll(file)
-
-
 		var jsonData JsonData
 		json.Unmarshal(byteValue, &jsonData)
 
-		for i := 0; i < len(jsonData.Commands); i++ {
-			fmt.Println("Base command: " + jsonData.Commands[i].Base)
-			fmt.Println("Names: " + jsonData.Commands[i].Name)
-			if jsonData.Commands[i].Name == commandName {
+		existingCommand, exists := jsonData.Commands[commandName]
+		if exists {
+			fmt.Println("Base command: " + existingCommand.Base)
+			fmt.Println("Names: " + existingCommand.Name)
+			if existingCommand.Name == commandName {
 				fmt.Println("Found")
-
-				cmdArgs := []string{"-c", jsonData.Commands[i].Base}
+	
+				cmdArgs := []string{"-c", existingCommand.Base}
 				cmd := exec.Command("bash", cmdArgs...) // TODO get this to happen inline
 				output, err := cmd.CombinedOutput()
-				check(err)
+				check(err, "Error when running command")
 				fmt.Println("Output:", string(output))
 			}
+		} else {
+			fmt.Println("Command not found")
 		}
 	},
 }

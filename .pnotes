@@ -1,12 +1,8 @@
 {
-    "commands": [
-        {
-            "name": "test",
-            "base": "echo 'test'"
-        },
-        {
-            "name": "test-get",
-            "base": "echo 'test-get'"
-        }
-    ]
+  "commands": {
+    "test": {
+      "name": "test",
+      "base": "echo 'test'"
+    }
+  }
 }

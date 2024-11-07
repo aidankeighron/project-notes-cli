@@ -1,16 +1,35 @@
 /*
 Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
 )
 
+type Command struct {
+	Name	string `json:"name"`
+	Base	string `json:"base"`
+	// flags	string `json:"flags"`
+}
 
+type JsonData struct {
+	Commands	map[string]Command `json:"commands"`
+}
+
+const FILE_NAME = ".pnotes"
+
+func check(e error, message ...string) {
+    if e != nil {
+		if len(message) >= 1 && message[0] != "" {
+			fmt.Println("##", message[0])
+		}
+        panic(e)
+    }
+}
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
