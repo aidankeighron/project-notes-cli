@@ -1,0 +1,8 @@
+{
+  "commands": {
+    "test": {
+      "name": "test",
+      "base": "echo 'test'"
+    }
+  }
+}
