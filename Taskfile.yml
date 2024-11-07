@@ -4,7 +4,7 @@ tasks:
     build:
         desc: Build the app
         cmds:
-        - GOFLAGS=-mod=mod go build -o bin/project-notes-cli main.go 
+        - GOFLAGS=-mod=mod go build -o bin/pnotes.exe main.go 
 
     run: 
         desc: Run the app
